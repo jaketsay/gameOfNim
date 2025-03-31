@@ -6,7 +6,8 @@ public class Game {
     private Scanner scanner;
     private static String player1;
     private static String player2;
-
+    private int scoreP1;
+    private int scoreP2;
     public Game() {
         scanner = new Scanner(System.in);
     }
@@ -14,6 +15,8 @@ public class Game {
 
     public void play() {
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
+
+        
 
         System.out.println("Enter Player 1 username:");
         player1 = myObj.nextLine();  // Read user input
@@ -23,7 +26,15 @@ public class Game {
         player2 = myObj.nextLine();  // Read user input
         System.out.println("Username is: " + player2);  // Output user input
 
-        boolean player1Turn = false;
+        boolean player1Turn;
+
+        int randTurn = (int)(Math.random() * 2);
+        if(randTurn == 1){
+            player1Turn = true;
+        }
+        else{
+            player1Turn = false;
+        }
         while (!Board.isGameOver()) {
             Board.printBoard();
 
@@ -41,16 +52,80 @@ public class Game {
 
         // The game is over
         if (player1Turn) {
+            scoreP1++;
+
             System.out.println("Congratulations " + player1 + " You won!");
+            System.out.println(player1 + "'s score: " + scoreP1);
+
         } else {
+            scoreP2++;
+
+ 
             System.out.println("Congratulations " + player2 + " You won!");
+            System.out.println(player2 + "'s score: " + scoreP2);
         }
         
         System.out.println("Do you wish to play again? YES or NO");
         String playAgain = myObj.nextLine();
         if (playAgain.equalsIgnoreCase("yes")){
             Board.populate();
-            play();
+            playAgain();
+          
+        } else {
+            System.out.println("Thanks for playing!");
+            
+        }
+
+    }
+
+    private void playAgain(){
+        Scanner myObj = new Scanner(System.in);  // Create a Scanner object
+    
+        boolean player1Turn;
+
+        int randTurn = (int)(Math.random() * 2);
+        if(randTurn == 1){
+            player1Turn = true;
+        }
+        else{
+            player1Turn = false;
+        }
+        while (!Board.isGameOver()) {
+            Board.printBoard();
+
+
+            if (player1Turn) {
+                player1Move();
+            } else {
+                player2Move();
+            }
+
+
+            player1Turn = !player1Turn; // Alternate turns
+        }
+
+
+        // The game is over
+        if (player1Turn) {
+            scoreP1++;
+
+            System.out.println("Congratulations " + player1 + " You won!");
+            System.out.println(player1 + "'s score: " + scoreP1);
+
+        } else {
+            scoreP2++;
+
+ 
+            System.out.println("Congratulations " + player2 + " You won!");
+            System.out.println(player2 + "'s score: " + scoreP2);
+        }
+        
+        
+        System.out.println("Do you wish to play again? YES or NO");
+        String playAgain = myObj.nextLine();
+        if (playAgain.equalsIgnoreCase("yes")){
+            Board.populate();
+            playAgain();
           
         } else {
             System.out.println("Thanks for playing!");
@@ -107,23 +182,4 @@ public class Game {
         // Remove the stones from the pile
         Board.removePieces(stones);
     }
-
-    // private void computerMove() {
-    //     System.out.println("Computer's turn...");
-    //     int pile = Board.getPieces();
-    //     int stones = -1;
-
-
-    //     // The computer will randomly choose a number of stones to remove
-    //     while (true) {
-    //         stones = (int) (Math.random() * pile) + 1; // Random number between 1 and the pile size
-    //         if (stones <= pile) {
-    //             break;
-    //         }
-    //     }
-
-
-    //     System.out.println("Computer removes " + stones + " stone(s).");
-    //     Board.removePieces(stones);
-    //}
 }
